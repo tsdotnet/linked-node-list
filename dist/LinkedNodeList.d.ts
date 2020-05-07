@@ -1,5 +1,6 @@
 import { ArrayLikeWritable, PredicateWithIndex } from '@tsdotnet/common-interfaces';
 import { LinkedNode, LinkedNodeWithValue, NodeWithValue } from './LinkedListNode';
+import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
 export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:
@@ -18,11 +19,9 @@ export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
  *
  * The count (or length) of this LinkedNodeList is not tracked since it could be corrupted at any time.
  */
-export default class LinkedNodeList<TNode extends LinkedNode<TNode>> implements Iterable<TNode> {
+export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends IterableCollectionBase<TNode> {
     private _first;
-    private _version;
     private _last;
-    constructor();
     private _unsafeCount;
     /**
      * Returns the tracked number of nodes in the list.
@@ -32,11 +31,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> implements 
      */
     get unsafeCount(): number;
     /**
-     * The version number used to track changes.
-     * @returns {number}
-     */
-    get version(): number;
-    /**
      * The first node.  Will be null if the collection is empty.
      */
     get first(): TNode | undefined;
@@ -44,15 +38,9 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> implements 
      * The last node.
      */
     get last(): TNode | undefined;
-    /**
-     * Iteratively counts the number of linked nodes and returns the value.
-     * @returns {number}
-     */
-    getCount(): number;
     static valueIterableFrom<T>(list: LinkedNodeList<LinkedNodeWithValue<T>>): Iterable<T>;
     static copyValues<T, TDestination extends ArrayLikeWritable<any>>(list: LinkedNodeList<LinkedNodeWithValue<T>>, array: TDestination, index?: number): TDestination;
-    [Symbol.iterator](): Iterator<TNode>;
-    assertVersion(version: number): true | never;
+    protected _getIterator(): Iterator<TNode>;
     /**
      * Erases the linked node's references to each other and returns the number of nodes.
      * @returns {number}

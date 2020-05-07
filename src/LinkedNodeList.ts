@@ -8,6 +8,7 @@ import ArgumentNullException from '@tsdotnet/exceptions/dist/ArgumentNullExcepti
 import {ArrayLikeWritable, PredicateWithIndex} from '@tsdotnet/common-interfaces';
 import {LinkedNode, LinkedNodeWithValue, NodeWithValue} from './LinkedListNode';
 import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
+import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
 
 export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
 /* eslint-disable @typescript-eslint/no-this-alias */
@@ -31,19 +32,11 @@ export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
  * The count (or length) of this LinkedNodeList is not tracked since it could be corrupted at any time.
  */
 export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
-	implements Iterable<TNode>
+	extends IterableCollectionBase<TNode>
 {
 	private _first: TNode | undefined;
-	private _version: number;
 	private _last: TNode | undefined;
-
-	constructor ()
-	{
-		this._unsafeCount = 0;
-		this._version = 0;
-	}
-
-	private _unsafeCount: number;
+	private _unsafeCount: number = 0;
 
 	/**
 	 * Returns the tracked number of nodes in the list.
@@ -54,15 +47,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	get unsafeCount (): number
 	{
 		return this._unsafeCount;
-	}
-
-	/**
-	 * The version number used to track changes.
-	 * @returns {number}
-	 */
-	get version (): number
-	{
-		return this._version;
 	}
 
 	/**
@@ -79,25 +63,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	get last (): TNode | undefined
 	{
 		return this._last;
-	}
-
-	/**
-	 * Iteratively counts the number of linked nodes and returns the value.
-	 * @returns {number}
-	 */
-	getCount (): number
-	{
-
-		let next = this._first;
-
-		let i: number = 0;
-		while(next)
-		{
-			i++;
-			next = next.next;
-		}
-
-		return i;
 	}
 
 	static* valueIterableFrom<T> (list: LinkedNodeList<LinkedNodeWithValue<T>>): Iterable<T>
@@ -127,27 +92,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		}
 
 		return array;
-	}
-
-	* [Symbol.iterator] (): Iterator<TNode>
-	{
-		const version = this._version;
-		let current: TNode | undefined, next = this.first;
-
-		while(next)
-		{
-			this.assertVersion(version);
-			current = next;
-			next = current.next;
-			yield current;
-		}
-	}
-
-	assertVersion (version: number): true | never
-	{
-		if(version!==this._version)
-			throw new InvalidOperationException('Collection was modified.');
-		return true;
 	}
 
 	/**
@@ -184,10 +128,57 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 		if(cF!==cL) console.warn('LinkedNodeList: Forward versus reverse count does not match when clearing. Forward: ' + cF + ', Reverse: ' + cL);
 
-		this._version++;
+		this._incrementVersion();
 		this._unsafeCount = 0;
 
 		return cF;
+	}
+
+	/**
+	 * Removes the specified node.
+	 * Returns true if successful and false if not found (already removed).
+	 * @param node
+	 * @returns {boolean}
+	 */
+	removeNode (node: TNode): boolean
+	{
+		if(!node) throw new ArgumentNullException('node');
+
+		const
+			_    = this,
+			prev = node.previous,
+			next = node.next;
+
+		let a: boolean = false,
+			b: boolean = false;
+
+		if(prev) prev.next = next;
+		else if(_._first==node) _._first = next;
+		else a = true;
+
+		if(next) next.previous = prev;
+		else if(_._last==node) _._last = prev;
+		else b = true;
+
+		if(a!==b)
+		{
+			throw new ArgumentException(
+				'node',
+				`Provided node is has no ${
+					a ? 'previous' : 'next'} reference but is not the ${
+					a ? 'first' : 'last'} node!`);
+		}
+
+		const removed = !a && !b;
+		if(removed)
+		{
+			_._incrementVersion();
+			_._unsafeCount--;
+			node.previous = undefined;
+			node.next = undefined;
+		}
+		return removed;
+
 	}
 
 	/**
@@ -276,50 +267,42 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	}
 
 	/**
-	 * Removes the specified node.
-	 * Returns true if successful and false if not found (already removed).
+	 * Inserts a node before the specified 'before' node.
+	 * If no 'before' node is specified, it inserts it as the first node.
 	 * @param node
-	 * @returns {boolean}
+	 * @param before
+	 * @returns {LinkedNodeList}
 	 */
-	removeNode (node: TNode): boolean
+	addNodeBefore (node: TNode, before?: TNode): this
 	{
-		if(!node) throw new ArgumentNullException('node');
+		assertValidDetached(node);
 
-		const
-			_    = this,
-			prev = node.previous,
-			next = node.next;
+		const _ = this;
 
-		let a: boolean = false,
-			b: boolean = false;
-
-		if(prev) prev.next = next;
-		else if(_._first==node) _._first = next;
-		else a = true;
-
-		if(next) next.previous = prev;
-		else if(_._last==node) _._last = prev;
-		else b = true;
-
-		if(a!==b)
+		if(!before)
 		{
-			throw new ArgumentException(
-				'node',
-				`Provided node is has no ${
-					a ? 'previous' : 'next'} reference but is not the ${
-					a ? 'first' : 'last'} node!`);
+			before = _._first;
 		}
 
-		const removed = !a && !b;
-		if(removed)
+		if(before)
 		{
-			_._version++;
-			_._unsafeCount--;
-			node.previous = undefined;
-			node.next = undefined;
-		}
-		return removed;
+			const prev = before.previous;
+			node.previous = prev;
+			node.next = before;
 
+			before.previous = node;
+			if(prev) prev.next = node;
+			if(before==_._first) _._first = node;
+		}
+		else
+		{
+			_._first = _._last = node;
+		}
+
+		_._incrementVersion();
+		_._unsafeCount++;
+
+		return this;
 	}
 
 	/**
@@ -380,45 +363,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	}
 
 	/**
-	 * Inserts a node before the specified 'before' node.
-	 * If no 'before' node is specified, it inserts it as the first node.
-	 * @param node
-	 * @param before
-	 * @returns {LinkedNodeList}
-	 */
-	addNodeBefore (node: TNode, before?: TNode): this
-	{
-		assertValidDetached(node);
-
-		const _ = this;
-
-		if(!before)
-		{
-			before = _._first;
-		}
-
-		if(before)
-		{
-			const prev = before.previous;
-			node.previous = prev;
-			node.next = before;
-
-			before.previous = node;
-			if(prev) prev.next = node;
-			if(before==_._first) _._first = node;
-		}
-		else
-		{
-			_._first = _._last = node;
-		}
-
-		_._version++;
-		_._unsafeCount++;
-
-		return this;
-	}
-
-	/**
 	 * Inserts a node after the specified 'after' node.
 	 * If no 'after' node is specified, it appends it as the last node.
 	 * @param node
@@ -450,7 +394,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 			_._first = _._last = node;
 		}
 
-		_._version++;
+		_._incrementVersion();
 		_._unsafeCount++;
 
 		return _;
@@ -478,9 +422,20 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		if(node==_._first) _._first = replacement;
 		if(node==_._last) _._last = replacement;
 
-		_._version++;
+		_._incrementVersion();
 
 		return _;
+	}
+
+	protected* _getIterator (): Iterator<TNode>
+	{
+		let current: TNode | undefined, next = this.first;
+		while(next)
+		{
+			current = next;
+			next = current.next;
+			yield current;
+		}
 	}
 
 }

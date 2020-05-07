@@ -5,6 +5,7 @@
 import InvalidOperationException from '@tsdotnet/exceptions/dist/InvalidOperationException';
 import ArgumentNullException from '@tsdotnet/exceptions/dist/ArgumentNullException';
 import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
+import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:
@@ -23,10 +24,10 @@ import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
  *
  * The count (or length) of this LinkedNodeList is not tracked since it could be corrupted at any time.
  */
-export default class LinkedNodeList {
+export default class LinkedNodeList extends IterableCollectionBase {
     constructor() {
+        super(...arguments);
         this._unsafeCount = 0;
-        this._version = 0;
     }
     /**
      * Returns the tracked number of nodes in the list.
@@ -36,13 +37,6 @@ export default class LinkedNodeList {
      */
     get unsafeCount() {
         return this._unsafeCount;
-    }
-    /**
-     * The version number used to track changes.
-     * @returns {number}
-     */
-    get version() {
-        return this._version;
     }
     /**
      * The first node.  Will be null if the collection is empty.
@@ -55,19 +49,6 @@ export default class LinkedNodeList {
      */
     get last() {
         return this._last;
-    }
-    /**
-     * Iteratively counts the number of linked nodes and returns the value.
-     * @returns {number}
-     */
-    getCount() {
-        let next = this._first;
-        let i = 0;
-        while (next) {
-            i++;
-            next = next.next;
-        }
-        return i;
     }
     static *valueIterableFrom(list) {
         if (!list)
@@ -87,20 +68,13 @@ export default class LinkedNodeList {
         }
         return array;
     }
-    *[Symbol.iterator]() {
-        const version = this._version;
+    *_getIterator() {
         let current, next = this.first;
         while (next) {
-            this.assertVersion(version);
             current = next;
             next = current.next;
             yield current;
         }
-    }
-    assertVersion(version) {
-        if (version !== this._version)
-            throw new InvalidOperationException('Collection was modified.');
-        return true;
     }
     /**
      * Erases the linked node's references to each other and returns the number of nodes.
@@ -128,7 +102,7 @@ export default class LinkedNodeList {
         }
         if (cF !== cL)
             console.warn('LinkedNodeList: Forward versus reverse count does not match when clearing. Forward: ' + cF + ', Reverse: ' + cL);
-        this._version++;
+        this._incrementVersion();
         this._unsafeCount = 0;
         return cF;
     }
@@ -222,7 +196,7 @@ export default class LinkedNodeList {
         }
         const removed = !a && !b;
         if (removed) {
-            _._version++;
+            _._incrementVersion();
             _._unsafeCount--;
             node.previous = undefined;
             node.next = undefined;
@@ -304,7 +278,7 @@ export default class LinkedNodeList {
         else {
             _._first = _._last = node;
         }
-        _._version++;
+        _._incrementVersion();
         _._unsafeCount++;
         return this;
     }
@@ -334,7 +308,7 @@ export default class LinkedNodeList {
         else {
             _._first = _._last = node;
         }
-        _._version++;
+        _._incrementVersion();
         _._unsafeCount++;
         return _;
     }
@@ -359,7 +333,7 @@ export default class LinkedNodeList {
             _._first = replacement;
         if (node == _._last)
             _._last = replacement;
-        _._version++;
+        _._incrementVersion();
         return _;
     }
 }
