@@ -19,11 +19,11 @@ export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
  * The count (or length) of this LinkedNodeList is not tracked since it could be corrupted at any time.
  */
 export default class LinkedNodeList<TNode extends LinkedNode<TNode>> implements Iterable<TNode> {
-    private _unsafeCount;
-    private _version;
     private _first;
+    private _version;
     private _last;
     constructor();
+    private _unsafeCount;
     /**
      * Returns the tracked number of nodes in the list.
      * Since a LinkedNodeList is unprotected, it is possible to modify the chain and this count could get out of sync.

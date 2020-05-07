@@ -87,7 +87,6 @@ export default class LinkedNodeList {
         }
         return array;
     }
-    // Note, no need for 'useCopy' since this avoids any modification conflict.
     *[Symbol.iterator]() {
         const version = this._version;
         let current, next = this.first;

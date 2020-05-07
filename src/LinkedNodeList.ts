@@ -129,8 +129,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		return array;
 	}
 
-	// Note, no need for 'useCopy' since this avoids any modification conflict.
-
 	* [Symbol.iterator] (): Iterator<TNode>
 	{
 		const version = this._version;
