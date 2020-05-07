@@ -71,14 +71,6 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         }
         return array;
     }
-    *_getIterator() {
-        let current, next = this.first;
-        while (next) {
-            current = next;
-            next = current.next;
-            yield current;
-        }
-    }
     /**
      * Erases the linked node's references to each other and returns the number of nodes.
      * @returns {number}
@@ -108,6 +100,41 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         this._incrementVersion();
         this._unsafeCount = 0;
         return cF;
+    }
+    /**
+     * Removes the specified node.
+     * Returns true if successful and false if not found (already removed).
+     * @param node
+     * @returns {boolean}
+     */
+    removeNode(node) {
+        if (!node)
+            throw new ArgumentNullException_1.default('node');
+        const _ = this, prev = node.previous, next = node.next;
+        let a = false, b = false;
+        if (prev)
+            prev.next = next;
+        else if (_._first == node)
+            _._first = next;
+        else
+            a = true;
+        if (next)
+            next.previous = prev;
+        else if (_._last == node)
+            _._last = prev;
+        else
+            b = true;
+        if (a !== b) {
+            throw new ArgumentException_1.default('node', `Provided node is has no ${a ? 'previous' : 'next'} reference but is not the ${a ? 'first' : 'last'} node!`);
+        }
+        const removed = !a && !b;
+        if (removed) {
+            _._incrementVersion();
+            _._unsafeCount--;
+            node.previous = undefined;
+            node.next = undefined;
+        }
+        return removed;
     }
     /**
      * Clears the list.
@@ -172,39 +199,34 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         return -1;
     }
     /**
-     * Removes the specified node.
-     * Returns true if successful and false if not found (already removed).
+     * Inserts a node before the specified 'before' node.
+     * If no 'before' node is specified, it inserts it as the first node.
      * @param node
-     * @returns {boolean}
+     * @param before
+     * @returns {LinkedNodeList}
      */
-    removeNode(node) {
-        if (!node)
-            throw new ArgumentNullException_1.default('node');
-        const _ = this, prev = node.previous, next = node.next;
-        let a = false, b = false;
-        if (prev)
-            prev.next = next;
-        else if (_._first == node)
-            _._first = next;
-        else
-            a = true;
-        if (next)
-            next.previous = prev;
-        else if (_._last == node)
-            _._last = prev;
-        else
-            b = true;
-        if (a !== b) {
-            throw new ArgumentException_1.default('node', `Provided node is has no ${a ? 'previous' : 'next'} reference but is not the ${a ? 'first' : 'last'} node!`);
+    addNodeBefore(node, before) {
+        assertValidDetached(node);
+        const _ = this;
+        if (!before) {
+            before = _._first;
         }
-        const removed = !a && !b;
-        if (removed) {
-            _._incrementVersion();
-            _._unsafeCount--;
-            node.previous = undefined;
-            node.next = undefined;
+        if (before) {
+            const prev = before.previous;
+            node.previous = prev;
+            node.next = before;
+            before.previous = node;
+            if (prev)
+                prev.next = node;
+            if (before == _._first)
+                _._first = node;
         }
-        return removed;
+        else {
+            _._first = _._last = node;
+        }
+        _._incrementVersion();
+        _._unsafeCount++;
+        return this;
     }
     /**
      * Removes the first node and returns it if successful.
@@ -253,36 +275,6 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
      */
     addNode(node) {
         this.addNodeAfter(node);
-        return this;
-    }
-    /**
-     * Inserts a node before the specified 'before' node.
-     * If no 'before' node is specified, it inserts it as the first node.
-     * @param node
-     * @param before
-     * @returns {LinkedNodeList}
-     */
-    addNodeBefore(node, before) {
-        assertValidDetached(node);
-        const _ = this;
-        if (!before) {
-            before = _._first;
-        }
-        if (before) {
-            const prev = before.previous;
-            node.previous = prev;
-            node.next = before;
-            before.previous = node;
-            if (prev)
-                prev.next = node;
-            if (before == _._first)
-                _._first = node;
-        }
-        else {
-            _._first = _._last = node;
-        }
-        _._incrementVersion();
-        _._unsafeCount++;
         return this;
     }
     /**
@@ -338,6 +330,14 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
             _._last = replacement;
         _._incrementVersion();
         return _;
+    }
+    *_getIterator() {
+        let current, next = this.first;
+        while (next) {
+            current = next;
+            next = current.next;
+            yield current;
+        }
     }
 }
 exports.default = LinkedNodeList;

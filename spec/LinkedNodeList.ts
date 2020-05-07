@@ -36,5 +36,15 @@ describe('LinkedNodeList', () => {
 		}
 		// noinspection SpellCheckingInspection
 		expect(result).toBe('abXd');
+
+		expect(() => {
+			for(const e of list)
+			{
+				list.addNode({value: e.value});
+			}
+		}).toThrow(); // collection modified.
+
+		list.clear();
+		expect(list.unsafeCount).toBe(0);
 	});
 });

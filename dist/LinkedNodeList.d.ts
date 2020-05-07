@@ -40,12 +40,18 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
     get last(): TNode | undefined;
     static valueIterableFrom<T>(list: LinkedNodeList<LinkedNodeWithValue<T>>): Iterable<T>;
     static copyValues<T, TDestination extends ArrayLikeWritable<any>>(list: LinkedNodeList<LinkedNodeWithValue<T>>, array: TDestination, index?: number): TDestination;
-    protected _getIterator(): Iterator<TNode>;
     /**
      * Erases the linked node's references to each other and returns the number of nodes.
      * @returns {number}
      */
     clear(): number;
+    /**
+     * Removes the specified node.
+     * Returns true if successful and false if not found (already removed).
+     * @param node
+     * @returns {boolean}
+     */
+    removeNode(node: TNode): boolean;
     /**
      * Clears the list.
      */
@@ -73,12 +79,13 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      */
     indexOf(node: TNode): number;
     /**
-     * Removes the specified node.
-     * Returns true if successful and false if not found (already removed).
+     * Inserts a node before the specified 'before' node.
+     * If no 'before' node is specified, it inserts it as the first node.
      * @param node
-     * @returns {boolean}
+     * @param before
+     * @returns {LinkedNodeList}
      */
-    removeNode(node: TNode): boolean;
+    addNodeBefore(node: TNode, before?: TNode): this;
     /**
      * Removes the first node and returns it if successful.
      */
@@ -104,14 +111,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      */
     addNode(node: TNode): this;
     /**
-     * Inserts a node before the specified 'before' node.
-     * If no 'before' node is specified, it inserts it as the first node.
-     * @param node
-     * @param before
-     * @returns {LinkedNodeList}
-     */
-    addNodeBefore(node: TNode, before?: TNode): this;
-    /**
      * Inserts a node after the specified 'after' node.
      * If no 'after' node is specified, it appends it as the last node.
      * @param node
@@ -126,4 +125,5 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      * @returns {any}
      */
     replace(node: TNode, replacement: TNode): this;
+    protected _getIterator(): Iterator<TNode>;
 }
