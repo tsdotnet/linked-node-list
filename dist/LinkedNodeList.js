@@ -28,8 +28,24 @@ const ArgumentException_1 = tslib_1.__importDefault(require("@tsdotnet/exception
  */
 class LinkedNodeList {
     constructor() {
-        this.unsafeCount = 0;
+        this._unsafeCount = 0;
         this._version = 0;
+    }
+    /**
+     * Returns the tracked number of nodes in the list.
+     * Since a LinkedNodeList is unprotected, it is possible to modify the chain and this count could get out of sync.
+     * To know the actual number of nodes, call .getCount() to iterate over each node.
+     * @returns {number}
+     */
+    get unsafeCount() {
+        return this._unsafeCount;
+    }
+    /**
+     * The version number used to track changes.
+     * @returns {number}
+     */
+    get version() {
+        return this._version;
     }
     /**
      * The first node.  Will be null if the collection is empty.
@@ -47,7 +63,7 @@ class LinkedNodeList {
      * Iteratively counts the number of linked nodes and returns the value.
      * @returns {number}
      */
-    get count() {
+    getCount() {
         let next = this._first;
         let i = 0;
         while (next) {
@@ -117,7 +133,7 @@ class LinkedNodeList {
         if (cF !== cL)
             console.warn('LinkedNodeList: Forward versus reverse count does not match when clearing. Forward: ' + cF + ', Reverse: ' + cL);
         this._version++;
-        this.unsafeCount = 0;
+        this._unsafeCount = 0;
         return cF;
     }
     /**
@@ -211,7 +227,7 @@ class LinkedNodeList {
         const removed = !a && !b;
         if (removed) {
             _._version++;
-            _.unsafeCount--;
+            _._unsafeCount--;
             node.previous = undefined;
             node.next = undefined;
         }
@@ -293,7 +309,7 @@ class LinkedNodeList {
             _._first = _._last = node;
         }
         _._version++;
-        _.unsafeCount++;
+        _._unsafeCount++;
         return this;
     }
     /**
@@ -323,7 +339,7 @@ class LinkedNodeList {
             _._first = _._last = node;
         }
         _._version++;
-        _.unsafeCount++;
+        _._unsafeCount++;
         return _;
     }
     /**

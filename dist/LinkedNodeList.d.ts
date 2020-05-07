@@ -19,15 +19,27 @@ export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
  * The count (or length) of this LinkedNodeList is not tracked since it could be corrupted at any time.
  */
 export default class LinkedNodeList<TNode extends LinkedNode<TNode>> implements Iterable<TNode> {
-    unsafeCount: number;
+    private _unsafeCount;
     private _version;
-    constructor();
     private _first;
+    private _last;
+    constructor();
+    /**
+     * Returns the tracked number of nodes in the list.
+     * Since a LinkedNodeList is unprotected, it is possible to modify the chain and this count could get out of sync.
+     * To know the actual number of nodes, call .getCount() to iterate over each node.
+     * @returns {number}
+     */
+    get unsafeCount(): number;
+    /**
+     * The version number used to track changes.
+     * @returns {number}
+     */
+    get version(): number;
     /**
      * The first node.  Will be null if the collection is empty.
      */
     get first(): TNode | undefined;
-    private _last;
     /**
      * The last node.
      */
@@ -36,7 +48,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> implements 
      * Iteratively counts the number of linked nodes and returns the value.
      * @returns {number}
      */
-    get count(): number;
+    getCount(): number;
     static valueIterableFrom<T>(list: LinkedNodeList<LinkedNodeWithValue<T>>): Iterable<T>;
     static copyValues<T, TDestination extends ArrayLikeWritable<any>>(list: LinkedNodeList<LinkedNodeWithValue<T>>, array: TDestination, index?: number): TDestination;
     [Symbol.iterator](): Iterator<TNode>;

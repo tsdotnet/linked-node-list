@@ -18,7 +18,7 @@ describe('LinkedNodeList', () => {
 		// noinspection SpellCheckingInspection
 		expect(result).toBe('abcd');
 		expect(list.unsafeCount).toBe(4);
-		expect(list.count).toBe(4);
+		expect(list.getCount()).toBe(4);
 
 		result = '';
 		for(const e of LinkedNodeList.valueIterableFrom(list))

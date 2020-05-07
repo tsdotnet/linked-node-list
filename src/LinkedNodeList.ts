@@ -33,16 +33,37 @@ export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
 export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	implements Iterable<TNode>
 {
-	unsafeCount: number;
+	private _first: TNode | undefined;
 	private _version: number;
+	private _last: TNode | undefined;
 
 	constructor ()
 	{
-		this.unsafeCount = 0;
+		this._unsafeCount = 0;
 		this._version = 0;
 	}
 
-	private _first: TNode | undefined;
+	private _unsafeCount: number;
+
+	/**
+	 * Returns the tracked number of nodes in the list.
+	 * Since a LinkedNodeList is unprotected, it is possible to modify the chain and this count could get out of sync.
+	 * To know the actual number of nodes, call .getCount() to iterate over each node.
+	 * @returns {number}
+	 */
+	get unsafeCount (): number
+	{
+		return this._unsafeCount;
+	}
+
+	/**
+	 * The version number used to track changes.
+	 * @returns {number}
+	 */
+	get version (): number
+	{
+		return this._version;
+	}
 
 	/**
 	 * The first node.  Will be null if the collection is empty.
@@ -51,8 +72,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	{
 		return this._first;
 	}
-
-	private _last: TNode | undefined;
 
 	/**
 	 * The last node.
@@ -66,7 +85,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	 * Iteratively counts the number of linked nodes and returns the value.
 	 * @returns {number}
 	 */
-	get count (): number
+	getCount (): number
 	{
 
 		let next = this._first;
@@ -168,7 +187,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		if(cF!==cL) console.warn('LinkedNodeList: Forward versus reverse count does not match when clearing. Forward: ' + cF + ', Reverse: ' + cL);
 
 		this._version++;
-		this.unsafeCount = 0;
+		this._unsafeCount = 0;
 
 		return cF;
 	}
@@ -297,7 +316,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		if(removed)
 		{
 			_._version++;
-			_.unsafeCount--;
+			_._unsafeCount--;
 			node.previous = undefined;
 			node.next = undefined;
 		}
@@ -396,7 +415,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		}
 
 		_._version++;
-		_.unsafeCount++;
+		_._unsafeCount++;
 
 		return this;
 	}
@@ -434,7 +453,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		}
 
 		_._version++;
-		_.unsafeCount++;
+		_._unsafeCount++;
 
 		return _;
 	}
