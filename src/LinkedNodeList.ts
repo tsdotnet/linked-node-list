@@ -83,7 +83,6 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 	static* valueIterableFrom<T> (list: LinkedNodeList<LinkedNodeWithValue<T>>): Iterable<T>
 	{
-
 		if(!list) throw new ArgumentNullException('list');
 
 		for(const node of list)
