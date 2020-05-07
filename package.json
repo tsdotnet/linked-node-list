@@ -1,7 +1,7 @@
 {
   "name": "@tsdotnet/linked-node-list",
   "version": "1.0.0",
-  "description": "",
+  "description": "An unprotected bi-directional linked list. Useful for implementing other collections.",
   "author": "electricessence",
   "license": "MIT",
   "types": "dist/LinkedNodeList.d.ts",

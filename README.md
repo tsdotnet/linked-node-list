@@ -4,7 +4,7 @@
 ![npm-publish](https://github.com/tsdotnet/linked-node-list/workflows/npm-publish/badge.svg)
 [![npm version](https://img.shields.io/npm/v/@tsdotnet/linked-node-list.svg?style=flat-square)](https://www.npmjs.com/package/@tsdotnet/linked-node-list)
 
-
+An unprotected bi-directional linked list. Useful for implementing other collections.
 
 ## Docs
 
