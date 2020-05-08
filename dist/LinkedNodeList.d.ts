@@ -18,8 +18,10 @@ export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
  * Although not as safe as a protected LinkedList, this class has less overhead and is more flexible.
  *
  * The count (or length) of this LinkedNodeList is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
+ *
+ * @template TNode The node type.
  */
-export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends IterableCollectionBase<TNode> {
+export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends IterableCollectionBase<TNode> {
     private _first;
     private _last;
     private _unsafeCount;
@@ -31,15 +33,15 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      */
     get unsafeCount(): number;
     /**
-     * The first node.  Will be null if the collection is empty.
+     * Returns the first node or undefined if the collection is empty.
+     * @return The first node or undefined.
      */
     get first(): TNode | undefined;
     /**
-     * The last node.
+     * Returns last node or be undefined if the collection is empty.
+     * @return The last node or undefined.
      */
     get last(): TNode | undefined;
-    static valueIterableFrom<T>(list: LinkedNodeList<LinkedNodeWithValue<T>>): Iterable<T>;
-    static copyValues<T, TDestination extends ArrayLikeWritable<any>>(list: LinkedNodeList<LinkedNodeWithValue<T>>, array: TDestination, index?: number): TDestination;
     /**
      * Erases the linked node's references to each other and returns the number of nodes.
      * @returns {number}
@@ -54,10 +56,12 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
     removeNode(node: TNode): boolean;
     /**
      * Clears the list.
+     * Provided for use with dispose helpers.
      */
     dispose(): void;
     /**
      * Clears the list.
+     * Provided for use with object pools.
      */
     recycle(): void;
     /**
@@ -69,8 +73,14 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
     /**
      * Gets the index of a particular node.
      * @param index
+     * @returns The node requested or undefined.
      */
     getNodeAt(index: number): TNode | undefined;
+    /**
+     * Iterates the list to find the specific node that matches the predicate condition.
+     * @param {PredicateWithIndex} condition
+     * @returns The found node or undefined.
+     */
     find(condition: PredicateWithIndex<TNode>): TNode | undefined;
     /**
      * Iterates the list to find the specified node and returns its index.
@@ -88,10 +98,14 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
     addNodeBefore(node: TNode, before?: TNode): this;
     /**
      * Removes the first node and returns it if successful.
+     * Returns undefined if the collection is empty.
+     * @return The node that was removed, or undefined if the collection is empty.
      */
     takeFirst(): TNode | undefined;
     /**
      * Removes the last node and returns it if successful.
+     * Returns undefined if the collection is empty.
+     * @return The node that was removed, or undefined if the collection is empty.
      */
     takeLast(): TNode | undefined;
     /**
@@ -126,4 +140,21 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      */
     replace(node: TNode, replacement: TNode): this;
     protected _getIterator(): Iterator<TNode>;
+}
+/**
+ * This class covers most LinkedNodeList use cases by assuming the node type includes a '.value' property.
+ */
+export declare class LinkedValueNodeList<T> extends LinkedNodeList<LinkedNodeWithValue<T>> {
+    /**
+     * Returns an iterable that selects the value of each node.
+     * @returns {Iterable}
+     */
+    getValues(): Iterable<T>;
+    /**
+     * Copies the values of each node to an array (or array-like object).
+     * @param {TDestination} array The target array.
+     * @param {number} index The starting index of the target array.
+     * @returns {TDestination} The target array.
+     */
+    copyValuesTo<TDestination extends ArrayLikeWritable<any>>(array: TDestination, index?: number): TDestination;
 }

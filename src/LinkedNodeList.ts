@@ -30,8 +30,10 @@ export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
  * Although not as safe as a protected LinkedList, this class has less overhead and is more flexible.
  *
  * The count (or length) of this LinkedNodeList is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
+ *
+ * @template TNode The node type.
  */
-export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
+export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	extends IterableCollectionBase<TNode>
 {
 	private _first: TNode | undefined;
@@ -50,7 +52,8 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	}
 
 	/**
-	 * The first node.  Will be null if the collection is empty.
+	 * Returns the first node or undefined if the collection is empty.
+	 * @return The first node or undefined.
 	 */
 	get first (): TNode | undefined
 	{
@@ -58,40 +61,12 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	}
 
 	/**
-	 * The last node.
+	 * Returns last node or be undefined if the collection is empty.
+	 * @return The last node or undefined.
 	 */
 	get last (): TNode | undefined
 	{
 		return this._last;
-	}
-
-	static* valueIterableFrom<T> (list: LinkedNodeList<LinkedNodeWithValue<T>>): Iterable<T>
-	{
-		if(!list) throw new ArgumentNullException('list');
-
-		for(const node of list)
-		{
-			yield node.value;
-		}
-	}
-
-	static copyValues<T, TDestination extends ArrayLikeWritable<any>> (
-		list: LinkedNodeList<LinkedNodeWithValue<T>>,
-		array: TDestination,
-		index: number = 0): TDestination
-	{
-		if(list && list.first)
-		{
-			if(!array) throw new ArgumentNullException('array');
-
-			let i = 0;
-			for(const value of LinkedNodeList.valueIterableFrom(list))
-			{
-				array[index + i++] = value;
-			}
-		}
-
-		return array;
 	}
 
 	/**
@@ -183,6 +158,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 	/**
 	 * Clears the list.
+	 * Provided for use with dispose helpers.
 	 */
 	dispose (): void
 	{
@@ -191,6 +167,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 	/**
 	 * Clears the list.
+	 * Provided for use with object pools.
 	 */
 	recycle (): void
 	{
@@ -211,6 +188,7 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	/**
 	 * Gets the index of a particular node.
 	 * @param index
+	 * @returns The node requested or undefined.
 	 */
 	getNodeAt (index: number): TNode | undefined
 	{
@@ -229,6 +207,11 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 	}
 
+	/**
+	 * Iterates the list to find the specific node that matches the predicate condition.
+	 * @param {PredicateWithIndex} condition
+	 * @returns The found node or undefined.
+	 */
 	find (condition: PredicateWithIndex<TNode>): TNode | undefined
 	{
 		let i = 0;
@@ -307,6 +290,8 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 	/**
 	 * Removes the first node and returns it if successful.
+	 * Returns undefined if the collection is empty.
+	 * @return The node that was removed, or undefined if the collection is empty.
 	 */
 	takeFirst (): TNode | undefined
 	{
@@ -321,6 +306,8 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 	/**
 	 * Removes the last node and returns it if successful.
+	 * Returns undefined if the collection is empty.
+	 * @return The node that was removed, or undefined if the collection is empty.
 	 */
 	takeLast (): TNode | undefined
 	{
@@ -438,6 +425,47 @@ export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		}
 	}
 
+}
+
+/**
+ * This class covers most LinkedNodeList use cases by assuming the node type includes a '.value' property.
+ */
+export class LinkedValueNodeList<T>
+	extends LinkedNodeList<LinkedNodeWithValue<T>>
+{
+
+	/**
+	 * Returns an iterable that selects the value of each node.
+	 * @returns {Iterable}
+	 */
+	* getValues (): Iterable<T>
+	{
+		for(const node of this)
+		{
+			yield node.value;
+		}
+	}
+
+	/**
+	 * Copies the values of each node to an array (or array-like object).
+	 * @param {TDestination} array The target array.
+	 * @param {number} index The starting index of the target array.
+	 * @returns {TDestination} The target array.
+	 */
+	copyValuesTo<TDestination extends ArrayLikeWritable<any>> (
+		array: TDestination,
+		index: number = 0): TDestination
+	{
+		if(!array) throw new ArgumentNullException('array');
+
+		let i = 0;
+		for(const node of this)
+		{
+			array[index + i++] = node.value;
+		}
+
+		return array;
+	}
 }
 
 function assertValidDetached<TNode extends LinkedNode<TNode>> (

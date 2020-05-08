@@ -23,8 +23,10 @@ import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableColle
  * Although not as safe as a protected LinkedList, this class has less overhead and is more flexible.
  *
  * The count (or length) of this LinkedNodeList is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
+ *
+ * @template TNode The node type.
  */
-export default class LinkedNodeList extends IterableCollectionBase {
+export class LinkedNodeList extends IterableCollectionBase {
     constructor() {
         super(...arguments);
         this._unsafeCount = 0;
@@ -39,34 +41,18 @@ export default class LinkedNodeList extends IterableCollectionBase {
         return this._unsafeCount;
     }
     /**
-     * The first node.  Will be null if the collection is empty.
+     * Returns the first node or undefined if the collection is empty.
+     * @return The first node or undefined.
      */
     get first() {
         return this._first;
     }
     /**
-     * The last node.
+     * Returns last node or be undefined if the collection is empty.
+     * @return The last node or undefined.
      */
     get last() {
         return this._last;
-    }
-    static *valueIterableFrom(list) {
-        if (!list)
-            throw new ArgumentNullException('list');
-        for (const node of list) {
-            yield node.value;
-        }
-    }
-    static copyValues(list, array, index = 0) {
-        if (list && list.first) {
-            if (!array)
-                throw new ArgumentNullException('array');
-            let i = 0;
-            for (const value of LinkedNodeList.valueIterableFrom(list)) {
-                array[index + i++] = value;
-            }
-        }
-        return array;
     }
     /**
      * Erases the linked node's references to each other and returns the number of nodes.
@@ -135,12 +121,14 @@ export default class LinkedNodeList extends IterableCollectionBase {
     }
     /**
      * Clears the list.
+     * Provided for use with dispose helpers.
      */
     dispose() {
         this.clear();
     }
     /**
      * Clears the list.
+     * Provided for use with object pools.
      */
     recycle() {
         this.clear();
@@ -158,6 +146,7 @@ export default class LinkedNodeList extends IterableCollectionBase {
     /**
      * Gets the index of a particular node.
      * @param index
+     * @returns The node requested or undefined.
      */
     getNodeAt(index) {
         if (index < 0)
@@ -169,6 +158,11 @@ export default class LinkedNodeList extends IterableCollectionBase {
         }
         return next;
     }
+    /**
+     * Iterates the list to find the specific node that matches the predicate condition.
+     * @param {PredicateWithIndex} condition
+     * @returns The found node or undefined.
+     */
     find(condition) {
         let i = 0;
         for (const e of this) {
@@ -227,6 +221,8 @@ export default class LinkedNodeList extends IterableCollectionBase {
     }
     /**
      * Removes the first node and returns it if successful.
+     * Returns undefined if the collection is empty.
+     * @return The node that was removed, or undefined if the collection is empty.
      */
     takeFirst() {
         const node = this._first;
@@ -240,6 +236,8 @@ export default class LinkedNodeList extends IterableCollectionBase {
     }
     /**
      * Removes the last node and returns it if successful.
+     * Returns undefined if the collection is empty.
+     * @return The node that was removed, or undefined if the collection is empty.
      */
     takeLast() {
         const node = this._last;
@@ -335,6 +333,35 @@ export default class LinkedNodeList extends IterableCollectionBase {
             next = current.next;
             yield current;
         }
+    }
+}
+/**
+ * This class covers most LinkedNodeList use cases by assuming the node type includes a '.value' property.
+ */
+export class LinkedValueNodeList extends LinkedNodeList {
+    /**
+     * Returns an iterable that selects the value of each node.
+     * @returns {Iterable}
+     */
+    *getValues() {
+        for (const node of this) {
+            yield node.value;
+        }
+    }
+    /**
+     * Copies the values of each node to an array (or array-like object).
+     * @param {TDestination} array The target array.
+     * @param {number} index The starting index of the target array.
+     * @returns {TDestination} The target array.
+     */
+    copyValuesTo(array, index = 0) {
+        if (!array)
+            throw new ArgumentNullException('array');
+        let i = 0;
+        for (const node of this) {
+            array[index + i++] = node.value;
+        }
+        return array;
     }
 }
 function assertValidDetached(node, propName = 'node') {

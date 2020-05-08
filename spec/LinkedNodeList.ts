@@ -1,8 +1,8 @@
-import LinkedNodeList, {LinkedNodeWithValue} from '../src/LinkedNodeList';
+import {LinkedValueNodeList} from '../src/LinkedNodeList';
 
 describe('LinkedNodeList', () => {
 	it('should add nodes as expected', () => {
-		const list = new LinkedNodeList<LinkedNodeWithValue<string>>();
+		const list = new LinkedValueNodeList<string>();
 		const cNode = {value: 'c'};
 		list
 			.addNode({value: 'b'})
@@ -21,7 +21,7 @@ describe('LinkedNodeList', () => {
 		expect(list.getCount()).toBe(4);
 
 		result = '';
-		for(const e of LinkedNodeList.valueIterableFrom(list))
+		for(const e of list.getValues())
 		{
 			result += e;
 		}
@@ -30,7 +30,7 @@ describe('LinkedNodeList', () => {
 
 		list.replace(cNode, {value: 'X'});
 		result = '';
-		for(const e of LinkedNodeList.valueIterableFrom(list))
+		for(const e of list.getValues())
 		{
 			result += e;
 		}
