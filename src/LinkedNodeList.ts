@@ -27,9 +27,9 @@ export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
  * If the consumer modifies a link (sets the previous or next value) it will effectively break the collection.
  *
  * It is possible to declare a node type of any kind as long as it contains a previous and next value that can reference another node.
- * Although not as safe as the included LinkedList, this class has less overhead and is more flexible.
+ * Although not as safe as a protected LinkedList, this class has less overhead and is more flexible.
  *
- * The count (or length) of this LinkedNodeList is not tracked since it could be corrupted at any time.
+ * The count (or length) of this LinkedNodeList is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
  */
 export default class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	extends IterableCollectionBase<TNode>
