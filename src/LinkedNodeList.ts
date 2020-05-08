@@ -188,9 +188,10 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	}
 
 	/**
-	 * Gets the index of a particular node.
+	 * Iterates the list returns the node at the index requested.
+	 * Returns undefined if the index is out of range.
 	 * @param index
-	 * @returns The node requested or undefined.
+	 * @returns The node at the index requested or undefined.
 	 */
 	getNodeAt (index: number): TNode | undefined
 	{
