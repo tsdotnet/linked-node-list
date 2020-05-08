@@ -7,7 +7,14 @@
   "types": "dist/LinkedNodeList.d.ts",
   "main": "dist/LinkedNodeList.js",
   "module": "dist-esm/LinkedNodeList.js",
-  "keywords": [],
+  "keywords": [
+    "linked list",
+    "doubly linked list",
+    "node list",
+    "bi-directional",
+    "bidirectional",
+    "iterable"
+  ],
   "scripts": {
     "build:dist": "rimraf dist/* && copyfiles -u 1 src/**/*.d.ts dist && tsc",
     "build:dist-esm": "rimraf dist-esm/* && tsc -p tsconfig.esm.json",
