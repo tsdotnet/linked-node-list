@@ -21,4 +21,4 @@ Although not as safe as a protected linked list, this class has less overhead an
 
 The count (or length) of this `LinkedNodeList` is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
 
-A perfect example of the use of `LinkedNodeList` is [`LinkedList`](https://github.com/tsdotnet/linked-list/) as it uses it for its internal collection.
+A perfect example of the use of `LinkedNodeList` is with [`LinkedList`](https://github.com/tsdotnet/linked-list/) as it uses it for its internal collection.
