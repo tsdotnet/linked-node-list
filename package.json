@@ -21,7 +21,7 @@
     "build": "npm install && run-p build:*",
     "bump": "npm run precommit && npm version patch",
     "bump-minor": "npm run precommit && npm version minor",
-    "docs": "rimraf docs/* && rimraf docs/.nojekyll && typedoc --options typedoc.json --readme none --theme minimal && node ./.build/create-nojekyll.js",
+    "docs": "rimraf docs/* && rimraf docs/.nojekyll && typedoc --options typedoc.json --readme none && node ./.build/create-nojekyll.js",
     "lint": "eslint src/**/*.ts",
     "precommit": "npm prune && npm install && run-p lint test && run-p build:* && npm run validate",
     "prepublishOnly": "npm run build && run-p validate test",
