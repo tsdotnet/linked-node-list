@@ -6,6 +6,9 @@
 
 An unprotected bi-directional linked list. Useful for implementing other collections or for managing custom nodes (links).
 
+If you are looking for a protected and value focused linked list:
+[github.com/tsdotnet/linked-list](https://github.com/tsdotnet/linked-list/)
+
 ## Docs
 
 [tsdotnet.github.io/linked-node-list](https://tsdotnet.github.io/linked-node-list/)
@@ -14,8 +17,8 @@ This class is useful for managing a list of linked nodes, but it does not protec
 If the consumer modifies a link (sets the previous or next value) it will effectively break the collection.
 
 It is possible to declare a node type of any kind as long as it contains a previous and next value that can reference another node.
-Although not as safe as a protected [LinkedList](https://github.com/tsdotnet/linked-list/), this class has less overhead and is more flexible.
+Although not as safe as a protected linked list, this class has less overhead and is more flexible.
 
-The count (or length) of this LinkedNodeList is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
+The count (or length) of this `LinkedNodeList` is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
 
-A perfect example of the use of LinkedNodeList is [LinkedList](https://github.com/tsdotnet/linked-list/) as it uses it for its internal collection.
+A perfect example of the use of `LinkedNodeList` is [`LinkedList`](https://github.com/tsdotnet/linked-list/) as it uses it for its internal collection.
