@@ -40,6 +40,8 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	private _last: TNode | undefined;
 	private _unsafeCount: number = 0;
 
+	constructor () {super();}
+
 	/**
 	 * Returns the tracked number of nodes in the list.
 	 * Since a LinkedNodeList is unprotected, it is possible to modify the chain and this count could get out of sync.
@@ -103,7 +105,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 
 		if(cF!==cL) console.warn('LinkedNodeList: Forward versus reverse count does not match when clearing. Forward: ' + cF + ', Reverse: ' + cL);
 
-		this._incrementVersion();
+		this.incrementVersion();
 		this._unsafeCount = 0;
 
 		return cF;
@@ -147,7 +149,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		const removed = !a && !b;
 		if(removed)
 		{
-			_._incrementVersion();
+			_.incrementVersion();
 			_._unsafeCount--;
 			node.previous = undefined;
 			node.next = undefined;
@@ -282,7 +284,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 			_._first = _._last = node;
 		}
 
-		_._incrementVersion();
+		_.incrementVersion();
 		_._unsafeCount++;
 
 		return this;
@@ -381,7 +383,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 			_._first = _._last = node;
 		}
 
-		_._incrementVersion();
+		_.incrementVersion();
 		_._unsafeCount++;
 
 		return _;
@@ -409,7 +411,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		if(node==_._first) _._first = replacement;
 		if(node==_._last) _._last = replacement;
 
-		_._incrementVersion();
+		_.incrementVersion();
 
 		return _;
 	}

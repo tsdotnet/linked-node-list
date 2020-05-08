@@ -25,6 +25,7 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
     private _first;
     private _last;
     private _unsafeCount;
+    constructor();
     /**
      * Returns the tracked number of nodes in the list.
      * Since a LinkedNodeList is unprotected, it is possible to modify the chain and this count could get out of sync.

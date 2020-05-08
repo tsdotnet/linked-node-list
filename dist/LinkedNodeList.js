@@ -31,7 +31,7 @@ const IterableCollectionBase_1 = tslib_1.__importDefault(require("@tsdotnet/coll
  */
 class LinkedNodeList extends IterableCollectionBase_1.default {
     constructor() {
-        super(...arguments);
+        super();
         this._unsafeCount = 0;
     }
     /**
@@ -83,7 +83,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         }
         if (cF !== cL)
             console.warn('LinkedNodeList: Forward versus reverse count does not match when clearing. Forward: ' + cF + ', Reverse: ' + cL);
-        this._incrementVersion();
+        this.incrementVersion();
         this._unsafeCount = 0;
         return cF;
     }
@@ -115,7 +115,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         }
         const removed = !a && !b;
         if (removed) {
-            _._incrementVersion();
+            _.incrementVersion();
             _._unsafeCount--;
             node.previous = undefined;
             node.next = undefined;
@@ -218,7 +218,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         else {
             _._first = _._last = node;
         }
-        _._incrementVersion();
+        _.incrementVersion();
         _._unsafeCount++;
         return this;
     }
@@ -301,7 +301,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         else {
             _._first = _._last = node;
         }
-        _._incrementVersion();
+        _.incrementVersion();
         _._unsafeCount++;
         return _;
     }
@@ -326,7 +326,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
             _._first = replacement;
         if (node == _._last)
             _._last = replacement;
-        _._incrementVersion();
+        _.incrementVersion();
         return _;
     }
     *_getIterator() {
