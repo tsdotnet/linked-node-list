@@ -25,7 +25,7 @@ const IterableCollectionBase_1 = tslib_1.__importDefault(require("@tsdotnet/coll
  * It is possible to declare a node type of any kind as long as it contains a previous and next value that can reference another node.
  * Although not as safe as a protected LinkedList, this class has less overhead and is more flexible.
  *
- * The count (or length) of this LinkedNodeList is tracked as '.unsafeCount' and calling '.getCount()' will iterate the list.
+ * The count (or length) of this `LinkedNodeList` is tracked as `.unsafeCount` and calling `.getCount()` will iterate the list.
  *
  * @template TNode The node type.
  */
@@ -36,8 +36,8 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
     }
     /**
      * Returns the tracked number of nodes in the list.
-     * Since a LinkedNodeList is unprotected, it is possible to modify the chain and this count could get out of sync.
-     * To know the actual number of nodes, call .getCount() to iterate over each node.
+     * Since a `LinkedNodeList` is unprotected, it is possible to modify the chain and this count could get out of sync.
+     * To know the actual number of nodes, call `.getCount()` to iterate over each node.
      * @returns {number}
      */
     get unsafeCount() {
