@@ -40,8 +40,8 @@
   "homepage": "https://github.com/tsdotnet/linked-node-list#readme",
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "^2.31.0",
+    "@typescript-eslint/eslint-plugin": "2.31.0",
+    "@typescript-eslint/parser": "2.31.0",
     "copyfiles": "^2.2.0",
     "eslint": "^7.0.0",
     "eslint-config-typescript": "^3.0.0",
@@ -56,8 +56,8 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@tsdotnet/collection-base": "^1.0.9",
-    "@tsdotnet/common-interfaces": "^1.0.2",
+    "@tsdotnet/collection-base": "^1.0.10",
+    "@tsdotnet/common-interfaces": "^1.0.3",
     "@tsdotnet/exceptions": "^1.0.12"
   }
 }
