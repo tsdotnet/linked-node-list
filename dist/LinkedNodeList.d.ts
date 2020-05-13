@@ -1,5 +1,5 @@
 import { ArrayLikeWritable, PredicateWithIndex } from '@tsdotnet/common-interfaces';
-import { LinkedNode, LinkedNodeWithValue, NodeWithValue } from './LinkedListNode';
+import { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode } from './LinkedListNode';
 import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
 export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
 /*****************************
@@ -21,7 +21,7 @@ export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
  *
  * @template TNode The node type.
  */
-export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends IterableCollectionBase<TNode> {
+export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends IterableCollectionBase<ProtectedLinkedNode<TNode>> {
     private _first;
     private _last;
     private _unsafeCount;
@@ -37,12 +37,12 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      * Returns the first node or undefined if the collection is empty.
      * @return The first node or undefined.
      */
-    get first(): TNode | undefined;
+    get first(): ProtectedLinkedNode<TNode> | undefined;
     /**
      * Returns last node or be undefined if the collection is empty.
      * @return The last node or undefined.
      */
-    get last(): TNode | undefined;
+    get last(): ProtectedLinkedNode<TNode> | undefined;
     /**
      * Erases the linked node's references to each other and returns the number of nodes.
      * @returns {number}
@@ -77,13 +77,13 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      * @param index
      * @returns The node at the index requested or undefined.
      */
-    getNodeAt(index: number): TNode | undefined;
+    getNodeAt(index: number): ProtectedLinkedNode<TNode> | undefined;
     /**
      * Iterates the list to find the specific node that matches the predicate condition.
      * @param {PredicateWithIndex} condition
      * @returns The found node or undefined.
      */
-    find(condition: PredicateWithIndex<TNode>): TNode | undefined;
+    find(condition: PredicateWithIndex<ProtectedLinkedNode<TNode>>): ProtectedLinkedNode<TNode> | undefined;
     /**
      * Iterates the list to find the specified node and returns its index.
      * @param node
@@ -141,7 +141,7 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      * @returns {any}
      */
     replace(node: TNode, replacement: TNode): this;
-    protected _getIterator(): Iterator<TNode>;
+    protected _getIterator(): Iterator<ProtectedLinkedNode<TNode>>;
 }
 /**
  * This class covers most LinkedNodeList use cases by assuming the node type includes a '.value' property.

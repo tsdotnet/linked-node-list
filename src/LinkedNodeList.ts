@@ -6,7 +6,12 @@
 import InvalidOperationException from '@tsdotnet/exceptions/dist/InvalidOperationException';
 import ArgumentNullException from '@tsdotnet/exceptions/dist/ArgumentNullException';
 import {ArrayLikeWritable, PredicateWithIndex} from '@tsdotnet/common-interfaces';
-import {LinkedNode, LinkedNodeWithValue, NodeWithValue} from './LinkedListNode';
+import {
+	LinkedNode,
+	LinkedNodeWithValue,
+	NodeWithValue,
+	ProtectedLinkedNode
+} from './LinkedListNode';
 import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
 import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
 
@@ -34,7 +39,7 @@ export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
  * @template TNode The node type.
  */
 export class LinkedNodeList<TNode extends LinkedNode<TNode>>
-	extends IterableCollectionBase<TNode>
+	extends IterableCollectionBase<ProtectedLinkedNode<TNode>>
 {
 	private _first: TNode | undefined;
 	private _last: TNode | undefined;
@@ -57,7 +62,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	 * Returns the first node or undefined if the collection is empty.
 	 * @return The first node or undefined.
 	 */
-	get first (): TNode | undefined
+	get first (): ProtectedLinkedNode<TNode> | undefined
 	{
 		return this._first;
 	}
@@ -66,7 +71,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	 * Returns last node or be undefined if the collection is empty.
 	 * @return The last node or undefined.
 	 */
-	get last (): TNode | undefined
+	get last (): ProtectedLinkedNode<TNode> | undefined
 	{
 		return this._last;
 	}
@@ -193,7 +198,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	 * @param index
 	 * @returns The node at the index requested or undefined.
 	 */
-	getNodeAt (index: number): TNode | undefined
+	getNodeAt (index: number): ProtectedLinkedNode<TNode> | undefined
 	{
 		if(index<0 || !isFinite(index))
 			return undefined;
@@ -215,7 +220,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	 * @param {PredicateWithIndex} condition
 	 * @returns The found node or undefined.
 	 */
-	find (condition: PredicateWithIndex<TNode>): TNode | undefined
+	find (condition: PredicateWithIndex<ProtectedLinkedNode<TNode>>): ProtectedLinkedNode<TNode> | undefined
 	{
 		let i = 0;
 		for(const e of this)
@@ -413,9 +418,9 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		return _;
 	}
 
-	protected* _getIterator (): Iterator<TNode>
+	protected* _getIterator (): Iterator<ProtectedLinkedNode<TNode>>
 	{
-		let current: TNode | undefined, next = this.first;
+		let current: ProtectedLinkedNode<TNode> | undefined, next = this.first;
 		while(next)
 		{
 			current = next;

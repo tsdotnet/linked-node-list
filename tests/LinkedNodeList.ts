@@ -76,6 +76,14 @@ describe('LinkedNodeList', () => {
 	describe('.getNodeAt(index)', () => {
 		const list = new LinkedValueNodeList<number>();
 		list.appendValue(1).appendValue(2).prependValue(0);
+		// Ensure value si not readonly.
+		list.first!.value = list.first!.value;
+		// @ts-expect-error Ensure read-only is working.
+		// noinspection JSConstantReassignment
+		list.first!.next = list.first!.next;
+		// @ts-expect-error Ensure read-only is working.
+		// noinspection JSConstantReassignment
+		list.first!.previous = list.first!.previous;
 
 		it('should return undefined if out of bounds', () => {
 			expect(list.getNodeAt(-1)).to.be.undefined;
