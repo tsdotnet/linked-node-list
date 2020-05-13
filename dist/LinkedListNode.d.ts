@@ -9,7 +9,9 @@ export interface LinkedNode<TNode extends LinkedNode<TNode>>
 	next?: TNode;
 }
 
-export type ProtectedLinkedNode<TNode extends LinkedNode<TNode>> = Omit<TNode, 'previous' | 'next'> & {
+export type ProtectedLinkedNode<TNode extends LinkedNode<TNode>> =
+	Omit<TNode, 'previous' | 'next'>
+	& {
 	readonly previous?: ProtectedLinkedNode<TNode>;
 	readonly next?: ProtectedLinkedNode<TNode>;
 };
