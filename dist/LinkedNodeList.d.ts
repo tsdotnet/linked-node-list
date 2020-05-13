@@ -148,6 +148,20 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
  */
 export declare class LinkedValueNodeList<T> extends LinkedNodeList<LinkedNodeWithValue<T>> {
     /**
+     * Adds a node with the given value to the start of the list.
+     * Becomes the first node.
+     * @param value
+     * @return {this}
+     */
+    prependValue(value: T): this;
+    /**
+     * Adds a node with the given value to the end of the list.
+     * Becomes the last node.
+     * @param value
+     * @return {this}
+     */
+    appendValue(value: T): this;
+    /**
      * Returns an iterable that selects the value of each node.
      * @returns {Iterable}
      */

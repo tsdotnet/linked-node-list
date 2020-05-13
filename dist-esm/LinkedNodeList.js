@@ -150,7 +150,7 @@ export class LinkedNodeList extends IterableCollectionBase {
      * @returns The node at the index requested or undefined.
      */
     getNodeAt(index) {
-        if (index < 0)
+        if (index < 0 || !isFinite(index))
             return undefined;
         let next = this._first;
         let i = 0;
@@ -340,6 +340,25 @@ export class LinkedNodeList extends IterableCollectionBase {
  * This class covers most LinkedNodeList use cases by assuming the node type includes a '.value' property.
  */
 export class LinkedValueNodeList extends LinkedNodeList {
+    /**
+     * Adds a node with the given value to the start of the list.
+     * Becomes the first node.
+     * @param value
+     * @return {this}
+     */
+    prependValue(value) {
+        this.addNodeBefore({ value: value });
+        return this;
+    }
+    /**
+     * Adds a node with the given value to the end of the list.
+     * Becomes the last node.
+     * @param value
+     * @return {this}
+     */
+    appendValue(value) {
+        return this.addNode({ value: value });
+    }
     /**
      * Returns an iterable that selects the value of each node.
      * @returns {Iterable}

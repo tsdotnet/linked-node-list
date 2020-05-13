@@ -195,7 +195,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	 */
 	getNodeAt (index: number): TNode | undefined
 	{
-		if(index<0)
+		if(index<0 || !isFinite(index))
 			return undefined;
 
 		let next = this._first;
@@ -300,10 +300,8 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	{
 		const node = this._first;
 		if(!node) return undefined;
-		if(node.previous)
-			throw new Error('Collection is corrupted: first node has previous node.');
-		if(!this.removeNode(node))
-			throw new Error('Collection is corrupted: unable to remove first node.');
+		if(node.previous) throw new Error('Collection is corrupted: first node has previous node.');
+		if(!this.removeNode(node)) throw new Error('Collection is corrupted: unable to remove first node.');
 		return node;
 	}
 
@@ -316,10 +314,8 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	{
 		const node = this._last;
 		if(!node) return undefined;
-		if(node.next)
-			throw new Error('Collection is corrupted: last node has next node.');
-		if(!this.removeNode(node))
-			throw new Error('Collection is corrupted: unable to remove last node.');
+		if(node.next) throw new Error('Collection is corrupted: last node has next node.');
+		if(!this.removeNode(node)) throw new Error('Collection is corrupted: unable to remove last node.');
 		return node;
 	}
 
@@ -436,6 +432,29 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 export class LinkedValueNodeList<T>
 	extends LinkedNodeList<LinkedNodeWithValue<T>>
 {
+
+	/**
+	 * Adds a node with the given value to the start of the list.
+	 * Becomes the first node.
+	 * @param value
+	 * @return {this}
+	 */
+	prependValue (value: T): this
+	{
+		this.addNodeBefore({value: value});
+		return this;
+	}
+
+	/**
+	 * Adds a node with the given value to the end of the list.
+	 * Becomes the last node.
+	 * @param value
+	 * @return {this}
+	 */
+	appendValue (value: T): this
+	{
+		return this.addNode({value: value});
+	}
 
 	/**
 	 * Returns an iterable that selects the value of each node.
