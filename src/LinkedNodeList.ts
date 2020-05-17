@@ -418,6 +418,27 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		return _;
 	}
 
+	/**
+	 * Iterable for iterating this collection in reverse order.
+	 * @return {Iterable<ProtectedLinkedNode>}
+	 */
+	get reversed (): Iterable<ProtectedLinkedNode<TNode>>
+	{
+		const _ = this;
+		return {
+			* [Symbol.iterator] (): Iterator<ProtectedLinkedNode<TNode>>
+			{
+				let current: ProtectedLinkedNode<TNode> | undefined, prev = _.last;
+				while(prev)
+				{
+					current = prev;
+					prev = current.previous;
+					yield current;
+				}
+			}
+		};
+	}
+
 	protected* _getIterator (): Iterator<ProtectedLinkedNode<TNode>>
 	{
 		let current: ProtectedLinkedNode<TNode> | undefined, next = this.first;

@@ -335,6 +335,23 @@ export class LinkedNodeList extends IterableCollectionBase {
             yield current;
         }
     }
+    /**
+     * Iterable for iterating this collection in reverse order.
+     * @return {Iterable<ProtectedLinkedNode>}
+     */
+    get reversed() {
+        const _ = this;
+        return {
+            *[Symbol.iterator]() {
+                let current, prev = _.last;
+                while (prev) {
+                    current = prev;
+                    prev = current.previous;
+                    yield current;
+                }
+            }
+        };
+    }
 }
 /**
  * This class covers most LinkedNodeList use cases by assuming the node type includes a '.value' property.
