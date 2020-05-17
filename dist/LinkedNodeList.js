@@ -331,14 +331,6 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         _.incrementVersion();
         return _;
     }
-    *_getIterator() {
-        let current, next = this.first;
-        while (next) {
-            current = next;
-            next = current.next;
-            yield current;
-        }
-    }
     /**
      * Iterable for iterating this collection in reverse order.
      * @return {Iterable<ProtectedLinkedNode>}
@@ -355,6 +347,14 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
                 }
             }
         };
+    }
+    *_getIterator() {
+        let current, next = this.first;
+        while (next) {
+            current = next;
+            next = current.next;
+            yield current;
+        }
     }
 }
 exports.LinkedNodeList = LinkedNodeList;

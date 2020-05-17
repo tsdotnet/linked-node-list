@@ -141,12 +141,12 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      * @returns {any}
      */
     replace(node: TNode, replacement: TNode): this;
-    protected _getIterator(): Iterator<ProtectedLinkedNode<TNode>>;
     /**
      * Iterable for iterating this collection in reverse order.
      * @return {Iterable<ProtectedLinkedNode>}
      */
     get reversed(): Iterable<ProtectedLinkedNode<TNode>>;
+    protected _getIterator(): Iterator<ProtectedLinkedNode<TNode>>;
 }
 /**
  * This class covers most LinkedNodeList use cases by assuming the node type includes a '.value' property.
