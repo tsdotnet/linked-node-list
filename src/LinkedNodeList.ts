@@ -419,12 +419,12 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		return _;
 	}
 
-	private _reversed?: Readonly<Iterable<ProtectedLinkedNode<TNode>>>;
+	private _reversed?: Readonly<ExtendedIterable<ProtectedLinkedNode<TNode>>>;
 	/**
 	 * Iterable for iterating this collection in reverse order.
 	 * @return {Iterable<ProtectedLinkedNode>}
 	 */
-	get reversed (): Iterable<ProtectedLinkedNode<TNode>>
+	get reversed (): ExtendedIterable<ProtectedLinkedNode<TNode>>
 	{
 		const _ = this;
 		return (_._reversed || (_._reversed = Object.freeze(ExtendedIterable.create({
@@ -438,7 +438,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 					yield current;
 				}
 			}
-		})))) as Iterable<ProtectedLinkedNode<TNode>>;
+		})))) as ExtendedIterable<ProtectedLinkedNode<TNode>>;
 	}
 
 	protected* _getIterator (): Iterator<ProtectedLinkedNode<TNode>>
