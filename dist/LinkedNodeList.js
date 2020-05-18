@@ -10,6 +10,7 @@ const InvalidOperationException_1 = tslib_1.__importDefault(require("@tsdotnet/e
 const ArgumentNullException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/ArgumentNullException"));
 const ArgumentException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/ArgumentException"));
 const IterableCollectionBase_1 = tslib_1.__importDefault(require("@tsdotnet/collection-base/dist/IterableCollectionBase"));
+const collection_base_1 = require("@tsdotnet/collection-base");
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:
@@ -337,7 +338,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
      */
     get reversed() {
         const _ = this;
-        return {
+        return _._reversed || (_._reversed = Object.freeze(collection_base_1.ExtendedIterable.create({
             *[Symbol.iterator]() {
                 let current, prev = _.last;
                 while (prev) {
@@ -346,7 +347,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
                     yield current;
                 }
             }
-        };
+        })));
     }
     *_getIterator() {
         let current, next = this.first;

@@ -14,6 +14,7 @@ import {
 } from './LinkedListNode';
 import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
 import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
+import {ExtendedIterable} from '@tsdotnet/collection-base';
 
 export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
 /* eslint-disable @typescript-eslint/no-this-alias */
@@ -418,14 +419,15 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 		return _;
 	}
 
+	private _reversed?: Readonly<Iterable<ProtectedLinkedNode<TNode>>>;
 	/**
 	 * Iterable for iterating this collection in reverse order.
 	 * @return {Iterable<ProtectedLinkedNode>}
 	 */
-	get reversed (): Iterable<ProtectedLinkedNode<TNode>>
+	get reversed (): Readonly<Iterable<ProtectedLinkedNode<TNode>>>
 	{
 		const _ = this;
-		return {
+		return _._reversed || (_._reversed = Object.freeze(ExtendedIterable.create({
 			* [Symbol.iterator] (): Iterator<ProtectedLinkedNode<TNode>>
 			{
 				let current: ProtectedLinkedNode<TNode> | undefined, prev = _.last;
@@ -436,7 +438,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 					yield current;
 				}
 			}
-		};
+		})));
 	}
 
 	protected* _getIterator (): Iterator<ProtectedLinkedNode<TNode>>

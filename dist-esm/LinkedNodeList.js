@@ -6,6 +6,7 @@ import InvalidOperationException from '@tsdotnet/exceptions/dist/InvalidOperatio
 import ArgumentNullException from '@tsdotnet/exceptions/dist/ArgumentNullException';
 import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
 import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
+import { ExtendedIterable } from '@tsdotnet/collection-base';
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:
@@ -333,7 +334,7 @@ export class LinkedNodeList extends IterableCollectionBase {
      */
     get reversed() {
         const _ = this;
-        return {
+        return _._reversed || (_._reversed = Object.freeze(ExtendedIterable.create({
             *[Symbol.iterator]() {
                 let current, prev = _.last;
                 while (prev) {
@@ -342,7 +343,7 @@ export class LinkedNodeList extends IterableCollectionBase {
                     yield current;
                 }
             }
-        };
+        })));
     }
     *_getIterator() {
         let current, next = this.first;
