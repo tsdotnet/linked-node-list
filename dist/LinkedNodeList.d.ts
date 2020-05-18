@@ -1,6 +1,7 @@
 import { ArrayLikeWritable, PredicateWithIndex } from '@tsdotnet/common-interfaces';
 import { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode } from './LinkedListNode';
 import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
+import { ExtendedIterable } from '@tsdotnet/collection-base';
 export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:
@@ -146,7 +147,7 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      * Iterable for iterating this collection in reverse order.
      * @return {Iterable<ProtectedLinkedNode>}
      */
-    get reversed(): Iterable<ProtectedLinkedNode<TNode>>;
+    get reversed(): ExtendedIterable<ProtectedLinkedNode<TNode>>;
     protected _getIterator(): Iterator<ProtectedLinkedNode<TNode>>;
 }
 /**
