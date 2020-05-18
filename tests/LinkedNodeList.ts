@@ -238,13 +238,26 @@ describe('LinkedNodeList', () => {
 		it('should iterate in reverse', () => {
 			const list = new LinkedValueNodeList<string>();
 			list.addNode({value: 'a'}).addNode({value: 'b'});
-			const a: NodeWithValue<string>[] = [];
+			let a: NodeWithValue<string>[] = [];
 			for(const n of list.reversed)
 			{
 				a.push(n);
 			}
 			expect(a[0].value).equal('b');
 			expect(a[1].value).equal('a');
+			a = list.reversed.toArray();
+			expect(a[0].value).equal('b');
+			expect(a[1].value).equal('a');
+		});
+	});
+
+	describe('.toArray()', () => {
+		it('should return the nodes as an array', () => {
+			const list = new LinkedValueNodeList<string>();
+			list.addNode({value: 'a'}).addNode({value: 'b'}).addNode({value: 'c'});
+			const a = list.toArray();
+			expect(a[0].value).equal('a');
+			expect(a[1].value).equal('b');
 		});
 	});
 });
