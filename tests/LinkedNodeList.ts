@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {expect} from 'chai';
-import {LinkedValueNodeList} from '../src/LinkedNodeList';
+import {LinkedValueNodeList, NodeWithValue} from '../src/LinkedNodeList';
 
 describe('LinkedNodeList', () => {
 	it('should add nodes as expected', () => {
@@ -231,6 +231,20 @@ describe('LinkedNodeList', () => {
 			const list = new LinkedValueNodeList<string>();
 			//@ts-expect-error
 			expect(() => list.removeNode(null)).to.throw();
+		});
+	});
+
+	describe('.reversed', () => {
+		it('should iterate in reverse', () => {
+			const list = new LinkedValueNodeList<string>();
+			list.addNode({value: 'a'}).addNode({value: 'b'});
+			const a: NodeWithValue<string>[] = [];
+			for(const n of list.reversed)
+			{
+				a.push(n);
+			}
+			expect(a[0].value).equal('b');
+			expect(a[1].value).equal('a');
 		});
 	});
 });

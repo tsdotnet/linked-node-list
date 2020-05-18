@@ -424,10 +424,10 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 	 * Iterable for iterating this collection in reverse order.
 	 * @return {Iterable<ProtectedLinkedNode>}
 	 */
-	get reversed (): Readonly<Iterable<ProtectedLinkedNode<TNode>>>
+	get reversed (): Iterable<ProtectedLinkedNode<TNode>>
 	{
 		const _ = this;
-		return _._reversed || (_._reversed = Object.freeze(ExtendedIterable.create({
+		return (_._reversed || (_._reversed = Object.freeze(ExtendedIterable.create({
 			* [Symbol.iterator] (): Iterator<ProtectedLinkedNode<TNode>>
 			{
 				let current: ProtectedLinkedNode<TNode> | undefined, prev = _.last;
@@ -438,7 +438,7 @@ export class LinkedNodeList<TNode extends LinkedNode<TNode>>
 					yield current;
 				}
 			}
-		})));
+		})))) as Iterable<ProtectedLinkedNode<TNode>>;
 	}
 
 	protected* _getIterator (): Iterator<ProtectedLinkedNode<TNode>>
