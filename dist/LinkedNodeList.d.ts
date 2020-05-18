@@ -146,7 +146,7 @@ export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends Ite
      * Iterable for iterating this collection in reverse order.
      * @return {Iterable<ProtectedLinkedNode>}
      */
-    get reversed(): Readonly<Iterable<ProtectedLinkedNode<TNode>>>;
+    get reversed(): Iterable<ProtectedLinkedNode<TNode>>;
     protected _getIterator(): Iterator<ProtectedLinkedNode<TNode>>;
 }
 /**

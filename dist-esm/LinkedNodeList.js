@@ -334,7 +334,7 @@ export class LinkedNodeList extends IterableCollectionBase {
      */
     get reversed() {
         const _ = this;
-        return _._reversed || (_._reversed = Object.freeze(ExtendedIterable.create({
+        return (_._reversed || (_._reversed = Object.freeze(ExtendedIterable.create({
             *[Symbol.iterator]() {
                 let current, prev = _.last;
                 while (prev) {
@@ -343,7 +343,7 @@ export class LinkedNodeList extends IterableCollectionBase {
                     yield current;
                 }
             }
-        })));
+        }))));
     }
     *_getIterator() {
         let current, next = this.first;
