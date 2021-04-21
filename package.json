@@ -16,7 +16,7 @@
     "iterable"
   ],
   "scripts": {
-    "build:dist": "rimraf dist/* && copyfiles -u 1 src/**/*.d.ts dist && tsc",
+    "build:dist": "rimraf dist/* && tsc && copyfiles -u 1 src/**/*.d.ts dist",
     "build:dist-esm": "rimraf dist-esm/* && tsc -p tsconfig.esm.json",
     "build": "pnpm i && run-p build:*",
     "bump": "npm run precommit && npm version patch",
@@ -59,7 +59,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "@tsdotnet/collection-base": "^2.0.7",
+    "@tsdotnet/collection-base": "^2.0.8",
     "@tsdotnet/common-interfaces": "^1.0.4",
     "@tsdotnet/exceptions": "^1.0.17",
     "tslib": "^2.2.0"
