@@ -12,7 +12,7 @@ If you are looking for a protected and value focused linked list:
 
 ## Docs
 
-[tsdotnet.github.io/linked-node-list](https://tsdotnet.github.io/linked-node-list/classes/_linkednodelist_.linkednodelist.html)
+[tsdotnet.github.io/linked-node-list](https://tsdotnet.github.io/linked-node-list/classes/linkednodelist.linkednodelist-1.html)
 
 This class is useful for managing a list of linked nodes, but it does not protect against modifying individual links.
 If the consumer modifies a link (sets the previous or next value) it will effectively break the collection.
