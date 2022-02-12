@@ -16,7 +16,7 @@ import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
 import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
 import {ExtendedIterable} from '@tsdotnet/collection-base';
 
-export {LinkedNode, LinkedNodeWithValue, NodeWithValue};
+export {LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode};
 /* eslint-disable @typescript-eslint/no-this-alias */
 
 /*****************************
