@@ -6,10 +6,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LinkedValueNodeList = exports.LinkedNodeList = void 0;
 const tslib_1 = require("tslib");
-const InvalidOperationException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/InvalidOperationException"));
-const ArgumentNullException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/ArgumentNullException"));
-const ArgumentException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/ArgumentException"));
-const IterableCollectionBase_1 = tslib_1.__importDefault(require("@tsdotnet/collection-base/dist/IterableCollectionBase"));
+const InvalidOperationException_1 = (0, tslib_1.__importDefault)(require("@tsdotnet/exceptions/dist/InvalidOperationException"));
+const ArgumentNullException_1 = (0, tslib_1.__importDefault)(require("@tsdotnet/exceptions/dist/ArgumentNullException"));
+const ArgumentException_1 = (0, tslib_1.__importDefault)(require("@tsdotnet/exceptions/dist/ArgumentException"));
+const IterableCollectionBase_1 = (0, tslib_1.__importDefault)(require("@tsdotnet/collection-base/dist/IterableCollectionBase"));
 const collection_base_1 = require("@tsdotnet/collection-base");
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*****************************
