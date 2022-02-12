@@ -2,7 +2,7 @@ import { ArrayLikeWritable, PredicateWithIndex } from '@tsdotnet/common-interfac
 import { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode } from './LinkedListNode';
 import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
 import { ExtendedIterable } from '@tsdotnet/collection-base';
-export { LinkedNode, LinkedNodeWithValue, NodeWithValue };
+export { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode };
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:
  * http://jsperf.com/simulating-a-queue
