@@ -1,13 +1,13 @@
 {
   "name": "@tsdotnet/linked-node-list",
-  "version": "1.3.20",
+  "version": "1.4.0",
   "description": "An unprotected bi-directional linked list. Useful for implementing other collections.",
   "author": "electricessence",
   "license": "MIT",
   "exports": {
     ".": {
       "import": "./dist/esm/LinkedNodeList.js",
-      "require": "./dist/cjs/LinkedNodeList.js", 
+      "require": "./dist/cjs/LinkedNodeList.js",
       "types": "./dist/LinkedNodeList.d.ts"
     }
   },
