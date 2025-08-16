@@ -5,11 +5,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LinkedValueNodeList = exports.LinkedNodeList = void 0;
-const tslib_1 = require("tslib");
-const InvalidOperationException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/InvalidOperationException"));
-const ArgumentNullException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/ArgumentNullException"));
-const ArgumentException_1 = tslib_1.__importDefault(require("@tsdotnet/exceptions/dist/ArgumentException"));
-const IterableCollectionBase_1 = tslib_1.__importDefault(require("@tsdotnet/collection-base/dist/IterableCollectionBase"));
+const exceptions_1 = require("@tsdotnet/exceptions");
 const collection_base_1 = require("@tsdotnet/collection-base");
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*****************************
@@ -31,7 +27,7 @@ const collection_base_1 = require("@tsdotnet/collection-base");
  *
  * @template TNode The node type.
  */
-class LinkedNodeList extends IterableCollectionBase_1.default {
+class LinkedNodeList extends collection_base_1.IterableCollectionBase {
     constructor() {
         super();
         this._unsafeCount = 0;
@@ -97,7 +93,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
      */
     removeNode(node) {
         if (!node)
-            throw new ArgumentNullException_1.default('node');
+            throw new exceptions_1.ArgumentNullException('node');
         const _ = this, prev = node.previous, next = node.next;
         let a = false, b = false;
         if (prev)
@@ -113,7 +109,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
         else
             b = true;
         if (a !== b) {
-            throw new ArgumentException_1.default('node', `Provided node is has no ${a ? 'previous' : 'next'} reference but is not the ${a ? 'first' : 'last'} node!`);
+            throw new exceptions_1.ArgumentException('node', `Provided node is has no ${a ? 'previous' : 'next'} reference but is not the ${a ? 'first' : 'last'} node!`);
         }
         const removed = !a && !b;
         if (removed) {
@@ -145,7 +141,7 @@ class LinkedNodeList extends IterableCollectionBase_1.default {
      */
     contains(node) {
         if (!node)
-            throw new ArgumentNullException_1.default('node');
+            throw new exceptions_1.ArgumentNullException('node');
         return this.indexOf(node) != -1;
     }
     /**
@@ -399,7 +395,7 @@ class LinkedValueNodeList extends LinkedNodeList {
      */
     copyValuesTo(array, index = 0) {
         if (!array)
-            throw new ArgumentNullException_1.default('array');
+            throw new exceptions_1.ArgumentNullException('array');
         let i = 0;
         for (const node of this) {
             array[index + i++] = node.value;
@@ -410,8 +406,8 @@ class LinkedValueNodeList extends LinkedNodeList {
 exports.LinkedValueNodeList = LinkedValueNodeList;
 function assertValidDetached(node, propName = 'node') {
     if (!node)
-        throw new ArgumentNullException_1.default(propName);
+        throw new exceptions_1.ArgumentNullException(propName);
     if (node.next || node.previous)
-        throw new InvalidOperationException_1.default('Cannot add a node to a LinkedNodeList that is already linked.');
+        throw new exceptions_1.InvalidOperationException('Cannot add a node to a LinkedNodeList that is already linked.');
 }
 //# sourceMappingURL=LinkedNodeList.js.map

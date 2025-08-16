@@ -1,7 +1,6 @@
-import { ArrayLikeWritable, PredicateWithIndex } from '@tsdotnet/common-interfaces';
-import { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode } from './LinkedListNode';
-import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
-import { ExtendedIterable } from '@tsdotnet/collection-base';
+import type { ArrayLikeWritable, PredicateWithIndex } from '@tsdotnet/common-interfaces';
+import type { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode } from './LinkedListNode';
+import { IterableCollectionBase, ExtendedIterable } from '@tsdotnet/collection-base';
 export { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode };
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:

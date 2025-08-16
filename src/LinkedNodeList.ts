@@ -3,18 +3,15 @@
  * Licensing: MIT
  */
 
-import InvalidOperationException from '@tsdotnet/exceptions/dist/InvalidOperationException';
-import ArgumentNullException from '@tsdotnet/exceptions/dist/ArgumentNullException';
-import {ArrayLikeWritable, PredicateWithIndex} from '@tsdotnet/common-interfaces';
-import {
+import {InvalidOperationException, ArgumentNullException, ArgumentException} from '@tsdotnet/exceptions';
+import type {ArrayLikeWritable, PredicateWithIndex} from '@tsdotnet/common-interfaces';
+import type {
 	LinkedNode,
 	LinkedNodeWithValue,
 	NodeWithValue,
 	ProtectedLinkedNode
 } from './LinkedListNode';
-import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
-import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
-import {ExtendedIterable} from '@tsdotnet/collection-base';
+import {IterableCollectionBase, ExtendedIterable} from '@tsdotnet/collection-base';
 
 export {LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode};
 /* eslint-disable @typescript-eslint/no-this-alias */

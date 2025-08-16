@@ -2,11 +2,8 @@
  * @author electricessence / https://github.com/electricessence/
  * Licensing: MIT
  */
-import InvalidOperationException from '@tsdotnet/exceptions/dist/InvalidOperationException';
-import ArgumentNullException from '@tsdotnet/exceptions/dist/ArgumentNullException';
-import ArgumentException from '@tsdotnet/exceptions/dist/ArgumentException';
-import IterableCollectionBase from '@tsdotnet/collection-base/dist/IterableCollectionBase';
-import { ExtendedIterable } from '@tsdotnet/collection-base';
+import { InvalidOperationException, ArgumentNullException, ArgumentException } from '@tsdotnet/exceptions';
+import { IterableCollectionBase, ExtendedIterable } from '@tsdotnet/collection-base';
 /* eslint-disable @typescript-eslint/no-this-alias */
 /*****************************
  * IMPORTANT NOTES ABOUT PERFORMANCE:
@@ -28,10 +25,10 @@ import { ExtendedIterable } from '@tsdotnet/collection-base';
  * @template TNode The node type.
  */
 export class LinkedNodeList extends IterableCollectionBase {
-    constructor() {
-        super();
-        this._unsafeCount = 0;
-    }
+    _first;
+    _last;
+    _unsafeCount = 0;
+    constructor() { super(); }
     /**
      * Returns the tracked number of nodes in the list.
      * Since a `LinkedNodeList` is unprotected, it is possible to modify the chain and this count could get out of sync.
@@ -328,6 +325,7 @@ export class LinkedNodeList extends IterableCollectionBase {
         _.incrementVersion();
         return _;
     }
+    _reversed;
     /**
      * Iterable for iterating this collection in reverse order.
      * @return {Iterable<ProtectedLinkedNode>}
