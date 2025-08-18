@@ -5,15 +5,15 @@
 
 export interface LinkedNode<TNode extends LinkedNode<TNode>>
 {
-	previous?: TNode;
-	next?: TNode;
+	previous?: TNode | undefined;
+	next?: TNode | undefined;
 }
 
 export type ProtectedLinkedNode<TNode extends LinkedNode<TNode>> =
 	Omit<TNode, 'previous' | 'next'>
 	& {
-	readonly previous?: ProtectedLinkedNode<TNode>;
-	readonly next?: ProtectedLinkedNode<TNode>;
+	readonly previous?: ProtectedLinkedNode<TNode> | undefined;
+	readonly next?: ProtectedLinkedNode<TNode> | undefined;
 };
 
 export interface NodeWithValue<TValue>
