@@ -1,6 +1,6 @@
 {
   "name": "@tsdotnet/linked-node-list",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "An unprotected bi-directional linked list. Useful for implementing other collections.",
   "author": "electricessence",
   "license": "MIT",
