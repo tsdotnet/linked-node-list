@@ -256,11 +256,19 @@ describe('LinkedNodeList', () => {
 			{
 				a.push(n);
 			}
-			expect(a[0].value).equal('b');
-			expect(a[1].value).equal('a');
+			const firstNode = a[0];
+			const secondNode = a[1];
+			expect(firstNode).toBeDefined();
+			expect(secondNode).toBeDefined();
+			expect(firstNode?.value).equal('b');
+			expect(secondNode?.value).equal('a');
 			a = list.reversed.toArray();
-			expect(a[0].value).equal('b');
-			expect(a[1].value).equal('a');
+			const firstReversed = a[0];
+			const secondReversed = a[1];
+			expect(firstReversed).toBeDefined();
+			expect(secondReversed).toBeDefined();
+			expect(firstReversed?.value).equal('b');
+			expect(secondReversed?.value).equal('a');
 		});
 	});
 
@@ -269,8 +277,12 @@ describe('LinkedNodeList', () => {
 			const list = new LinkedValueNodeList<string>();
 			list.addNode({value: 'a'}).addNode({value: 'b'}).addNode({value: 'c'});
 			const a = list.toArray();
-			expect(a[0].value).equal('a');
-			expect(a[1].value).equal('b');
+			const firstArrayItem = a[0];
+			const secondArrayItem = a[1];
+			expect(firstArrayItem).toBeDefined();
+			expect(secondArrayItem).toBeDefined();
+			expect(firstArrayItem?.value).equal('a');
+			expect(secondArrayItem?.value).equal('b');
 		});
 	});
 });
