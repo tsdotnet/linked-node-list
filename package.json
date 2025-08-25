@@ -61,9 +61,9 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
-    "@tsdotnet/collection-base": "^2.1.5",
-    "@tsdotnet/common-interfaces": "^1.0.5",
-    "@tsdotnet/exceptions": "^1.2.4",
+    "@tsdotnet/collection-base": "^2.1.6",
+    "@tsdotnet/common-interfaces": "^1.0.6",
+    "@tsdotnet/exceptions": "^1.2.5",
     "tslib": "^2.8.1"
   },
   "pnpm": {
