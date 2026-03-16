@@ -4,7 +4,7 @@
  */
 
 import {describe, it, expect} from 'vitest';
-import {LinkedNodeList} from '../src/LinkedNodeList';
+import {LinkedNodeList} from '../src/LinkedNodeList.js';
 
 describe('LinkedNodeList Version Checking', () => {
 	it('should throw if modified while iterating', () => {

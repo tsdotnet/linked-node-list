@@ -10,7 +10,7 @@ import type {
 	LinkedNodeWithValue,
 	NodeWithValue,
 	ProtectedLinkedNode
-} from './LinkedListNode';
+} from './LinkedListNode.js';
 import {IterableCollectionBase, ExtendedIterable} from '@tsdotnet/collection-base';
 
 export {LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode};

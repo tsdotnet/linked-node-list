@@ -1,5 +1,5 @@
 import type { ArrayLikeWritable, PredicateWithIndex } from '@tsdotnet/common-interfaces';
-import type { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode } from './LinkedListNode';
+import type { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode } from './LinkedListNode.js';
 import { IterableCollectionBase, ExtendedIterable } from '@tsdotnet/collection-base';
 export { LinkedNode, LinkedNodeWithValue, NodeWithValue, ProtectedLinkedNode };
 export declare class LinkedNodeList<TNode extends LinkedNode<TNode>> extends IterableCollectionBase<ProtectedLinkedNode<TNode>> {

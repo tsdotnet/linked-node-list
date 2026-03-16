@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, it, expect } from 'vitest';
-import {LinkedValueNodeList, NodeWithValue} from '../src/LinkedNodeList';
+import {LinkedValueNodeList, NodeWithValue} from '../src/LinkedNodeList.js';
 
 describe('LinkedNodeList', () => {
 	it('should add nodes as expected', () => {
