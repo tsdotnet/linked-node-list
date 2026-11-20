@@ -1,4 +1,4 @@
-<a href="https://tsdotnet.github.io/linked-node-list/"><img src="https://cdn.jsdelivr.net/gh/tsdotnet/linked-node-list@master/assets/banner.svg" alt="@tsdotnet/linked-node-list: The nodes are the list. Intrusive linked list, no wrappers."></a>
+<a name="banner"><img src="https://cdn.jsdelivr.net/gh/tsdotnet/linked-node-list@master/assets/banner.svg" alt="@tsdotnet/linked-node-list: The nodes are the list. Intrusive linked list, no wrappers."></a>
 
 [![npm version](https://img.shields.io/npm/v/@tsdotnet/linked-node-list.svg?style=flat-square)](https://www.npmjs.com/package/@tsdotnet/linked-node-list)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/tsdotnet/linked-node-list/blob/master/LICENSE)
