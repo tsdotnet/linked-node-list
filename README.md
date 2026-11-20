@@ -1,24 +1,51 @@
-# ![alt text](https://avatars1.githubusercontent.com/u/64487547?s=30 "tsdotnet") tsdotnet / linked-node-list
+![@tsdotnet/linked-node-list: The nodes are the list. Intrusive linked list, no wrappers.](https://cdn.jsdelivr.net/gh/tsdotnet/linked-node-list@master/assets/banner.svg)
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/tsdotnet/linked-node-list/blob/master/LICENSE)
-![100% code coverage](https://img.shields.io/badge/coverage-100%25-green)
 [![npm version](https://img.shields.io/npm/v/@tsdotnet/linked-node-list.svg?style=flat-square)](https://www.npmjs.com/package/@tsdotnet/linked-node-list)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/tsdotnet/linked-node-list/blob/master/LICENSE)
 
-An unprotected bi-directional linked list. Useful for implementing other collections or for managing custom nodes (links).
+An intrusive linked list where your own objects carry the next and previous links, with no wrapper nodes.
 
-If you are looking for a protected and value focused linked list:
-[github.com/tsdotnet/linked-list](https://github.com/tsdotnet/linked-list/)
+## Install
+
+```sh
+npm install @tsdotnet/linked-node-list
+```
+
+## Usage
+
+```ts
+import { LinkedNodeList, type LinkedNode } from '@tsdotnet/linked-node-list';
+
+interface Job extends LinkedNode<Job> { name: string }
+
+const jobs = new LinkedNodeList<Job>();
+jobs.addNode({ name: 'build' }).addNode({ name: 'test' });
+
+jobs.first?.name; // 'build'
+jobs.takeFirst()?.name; // 'build'
+```
+
+Your objects hold `next` and `previous` themselves, so no wrapper is allocated. For a ready made node with a `value`, use `LinkedValueNodeList`.
+
+## Use it from
+
+ESM (`import { LinkedNodeList } from '@tsdotnet/linked-node-list';`) or CommonJS (`const { LinkedNodeList } = require('@tsdotnet/linked-node-list');`).
+
+<details><summary>In a browser, without a bundler</summary>
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@tsdotnet/type@1/dist/umd/type.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsdotnet/compare@1/dist/umd/compare.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsdotnet/exceptions@1/dist/umd/exceptions.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsdotnet/collection-base@2/dist/umd/collection-base.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsdotnet/linked-node-list@1/dist/umd/linked-node-list.min.js"></script>
+<script>
+  const { LinkedNodeList } = tsdotnet.linkedNodeList;
+</script>
+```
+
+</details>
 
 ## Docs
 
 [tsdotnet.github.io/linked-node-list](https://tsdotnet.github.io/linked-node-list/)
-
-This class is useful for managing a list of linked nodes, but it does not protect against modifying individual links.
-If the consumer modifies a link (sets the previous or next value) it will effectively break the collection.
-
-It is possible to declare a node type of any kind as long as it contains a previous and next value that can reference another node.
-Although not as safe as a protected linked list, this class has less overhead and is more flexible.
-
-The count (or length) of this `LinkedNodeList` is tracked as `.unsafeCount` and calling `.getCount()` will iterate the list.
-
-A perfect example of the use of `LinkedNodeList` is with [`LinkedList`](https://github.com/tsdotnet/linked-list/) as it uses it for its internal collection.
